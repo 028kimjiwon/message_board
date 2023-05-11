@@ -39,9 +39,6 @@ public class IndexServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         int page = 1;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-        } catch(NumberFormatException e) {}
 
         // 最大件数と開始位置を指定してメッセージを取得
         List<Message> messages = em.createNamedQuery("getAllMessages", Message.class)
@@ -65,6 +62,9 @@ public class IndexServlet extends HttpServlet {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
         }
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+        } catch(NumberFormatException e) {}
 
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/messages/index.jsp");

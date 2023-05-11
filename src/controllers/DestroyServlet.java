@@ -29,10 +29,7 @@ public class DestroyServlet extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        response.getWriter().append("Served at: ").append(request.getContextPath());
-    }
+
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -45,13 +42,11 @@ public class DestroyServlet extends HttpServlet {
                 // セッションスコープからメッセージのIDを取得して
                 // 該当のIDのメッセージ1件のみをデータベースから取得
                 Message m = em.find(Message.class, (Integer)(request.getSession().getAttribute("message_id")));
-
                 em.getTransaction().begin();
                 em.remove(m);       // データ削除
                 em.getTransaction().commit();
+                request.getSession().setAttribute("flush", "削除が完了しました。");       // ここを追記
                 em.close();
-
-                // セッションスコープ上の不要になったデータを削除
                 request.getSession().removeAttribute("message_id");
 
                 // indexページへリダイレクト
